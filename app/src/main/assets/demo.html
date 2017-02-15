@@ -1,0 +1,124 @@
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <script src="jymt-1.0.0.js"></script>
+    <script src="jTest.js"></script>
+    <style>
+        body {
+        font-family:"宋体";
+        font-size: 12px;
+        }
+    </style>
+    <title> js调用java </title>
+</head>
+
+<body>
+<script>
+        ymt.config({
+            debug: true,
+            appId: '',
+            timestamp: '',
+            nonceStr: '',
+            signature: '',
+            jsApiList: []
+        });
+</script>
+<p>
+    <xmp id="show">
+    </xmp>
+</p>
+<p>
+    <xmp id="init">
+    </xmp>
+</p>
+<input type="text" id="text1" value="用户名(username)" maxlength="7"/>
+<br/>
+<input type="text" id="text2" value="password" maxlength="7"/>
+
+<table style="width:100%;border:1px;">
+    <tr>
+        <td><input type="button" id="enter" value="发给Native" onclick="jTest.testClick();"/>
+            <input type="button" id="enter2" value="显示html" onclick="jTest.testDiv();"/>
+            <input type="button" id="test" value="test" onclick="jTest.test();"/>
+            <input type="button" id="uploadimg" value="代理图片" onclick="jTest.proxyImg();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="关闭窗口" onclick="jTest.closeWin();"/>
+            <input type="button" value="打开窗口" onclick="jTest.openWin();"/>
+            <input type="button" value="标题栏" onclick="jTest.titleBar();"/>
+            <input type="button" value="底部栏" onclick="jTest.bottomBar();"/>
+            <input type="button" value="下拉刷新" onclick="jTest.pageRefreshType();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="用户登录" onclick="jTest.userLogin();"/>
+            <input type="button" value="登录状态" onclick="jTest.getLoginStatus();"/>
+            <input type="button" value="用户信息" onclick="jTest.getUserInfo();"/>
+            <input type="button" value="上传头像" onclick="jTest.uploadUserIcon();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="选择相册" onclick="jTest.chooseImage();"/>
+            <input type="button" value="上传图片" onclick="jTest.uploadImage();"/>
+            <input type="button" value="支付" onclick="jTest.pay();"/>
+            <input type="button" value="通知支付" onclick="jTest.notifyPay();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="分享" onclick="jTest.share();"/>
+            <input type="button" value="评论" onclick="jTest.comment();"/>
+            <input type="button" value="回复评论" onclick="jTest.replyComment();"/>
+            <input type="button" value="活动粉丝列表" onclick="jTest.activityPartnerList();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="笔记详情" onclick="jTest.noteDetail();"/>
+            <input type="button" value="发布笔记" onclick="jTest.publishNote();"/>
+            <input type="button" value="笔记粉丝列表" onclick="jTest.noteFansList();"/>
+            <input type="button" value="消息图标" onclick="jTest.showMsgIcon();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="洋管家" onclick="jTest.onlineService();"/>
+            <input type="button" value="打开聊天" onclick="jTest.openChat();"/>
+            <input type="button" value="直播详情" onclick="jTest.liveDetail();"/>
+            <input type="button" value="产品详情" onclick="jTest.productDetail();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="Tab页" onclick="jTest.tabHome();"/>
+            <input type="button" value="反馈" onclick="jTest.feedBack();"/>
+            <input type="button" value="通讯录" onclick="jTest.contactBook();"/>
+            <input type="button" value="绑定手机" onclick="jTest.bindMobile();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="监听事件" onclick="jTest.listenPageEvent();"/>
+            <input type="button" value="设备信息" onclick="jTest.getDeviceInfo();"/>
+            <input type="button" value="呼叫号码" onclick="jTest.callPhone();"/>
+            <input type="button" value="截图" onclick="jTest.screenShot();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="网络类型" onclick="jTest.getNetworkType();"/>
+            <input type="button" value="友盟日志" onclick="jTest.sendUmengLog();"/>
+            <input type="button" value="算法日志" onclick="jTest.sendYLog();"/>
+        </td>
+    </tr>
+</table>
+
+<img id="imgNative" src="" style="width:80px;height:80px;">
+
+</body>
+
+</html>
