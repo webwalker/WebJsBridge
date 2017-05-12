@@ -120,7 +120,7 @@
     //无通用回调
     function execute(method, data){
         if(!isValid()) return;
-        window.WebViewJavascriptBridge.callHandler2(method, data);
+        window.WebViewJavascriptBridge.callHandler(method, data);
     }
 
     //配置化完成后，执行Ready设置的回调(如果ready没有执行过)

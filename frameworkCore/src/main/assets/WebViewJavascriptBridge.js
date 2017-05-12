@@ -70,56 +70,41 @@
         }, responseCallback);
     }
 
-    // without common callback via xujian
-    function callHandler2(handlerName, data) {
-        _doSend2({handlerName: handlerName, data: data});
-    }
-
     //sendMessage add message, 触发native处理 sendMessage
     function _doSend(message, responseCallback) {
-        if (responseCallback) {
-            var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();
-            responseCallbacks[callbackId] = responseCallback;
-            message.callbackId = callbackId;
-        }
-
+        handleNativeCallback(message, responseCallback);
         sendMessageQueue.push(message);
         messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
     }
 
-    // without common callback via xujian
-    function _doSend2(message) {
-        handleNativeCallback(message);
-        sendMessageQueue.push(message);
-        messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
-    }
-
-    //via xujian
-    function handleNativeCallback(msg){
+    function handleNativeCallback(msg, responseCallback){
         // 定义一个虚拟回调用于分发不同的回调方法：success、fail等
         var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();
-        responseCallbacks[callbackId] = function(result){
-            //var result = JSON.parse(data);
-            if(!result || !result.code){
-                alert("handle native callback exception.");
-                return;
-            }
-            var callback = msg.data;
-            switch(result.code){
-                case 1: if(isDefined(callback.success)) callback.success(result);
-                        if(isDefined(callback.complete)) callback.complete(result);
-                    break;
-                case 2: if(isDefined(callback.fail)) callback.fail(result);
-                        if(isDefined(callback.complete)) callback.complete(result);
-                    break;
-                case 3: if(isDefined(callback.complete)) callback.complete(result);
-                    break;
-                case 4: if(isDefined(callback.cancel)) callback.cancel(result);
-                    break;
-                default: if(isDefined(callback.complete)) callback.complete(result);
-                    break;
-            }
-        };
+        if(!responseCallback){
+           responseCallback = function(result){
+                        //var result = JSON.parse(data);
+                        if(!result || !result.code){
+                            alert("handle native callback exception.");
+                            return;
+                        }
+                        var callback = msg.data;
+                        switch(result.code){
+                            case 1: if(isDefined(callback.success)) callback.success(result);
+                                    if(isDefined(callback.complete)) callback.complete(result);
+                                break;
+                            case 2: if(isDefined(callback.fail)) callback.fail(result);
+                                    if(isDefined(callback.complete)) callback.complete(result);
+                                break;
+                            case 3: if(isDefined(callback.complete)) callback.complete(result);
+                                break;
+                            case 4: if(isDefined(callback.cancel)) callback.cancel(result);
+                                break;
+                            default: if(isDefined(callback.complete)) callback.complete(result);
+                                break;
+                        }
+                    };
+        }
+        responseCallbacks[callbackId] = responseCallback;
         msg.callbackId = callbackId;
     }
 
@@ -132,10 +117,8 @@
     function _fetchQueue() {
         var messageQueueString = JSON.stringify(sendMessageQueue);
         sendMessageQueue = [];
-        //add by hq
         if (isIphone()) {
             return messageQueueString;
-            //android can't read directly the return data, so we can reload iframe src to communicate with java
         } else if (isAndroid()) {
             messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);
         }
@@ -210,7 +193,6 @@
         send: send,
         registerHandler: registerHandler,
         callHandler: callHandler,
-        callHandler2: callHandler2,
         _fetchQueue: _fetchQueue,
         _handleMessageFromNative: _handleMessageFromNative,
         getVersion: getVersion
@@ -223,5 +205,5 @@
     readyEvent.bridge = WebViewJavascriptBridge;
     doc.dispatchEvent(readyEvent);
     try{ymt.initCallback();}catch(e){}
-    try{YmtApi.sendEvent(1000, {}, '');}catch(e){}
+    //try{YmtApi.sendEvent(1000, {}, '');}catch(e){}
 })();

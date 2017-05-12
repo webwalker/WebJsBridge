@@ -1,10 +1,9 @@
     ymt.ready(function(){
         // 注册方法，让Native层调用
-        window.WebViewJavascriptBridge.registerHandler("functionInJs", function(data, responseCallback) {
+        ymt.registerHandler("functionInJs", function(data, responseCallback) {
             document.getElementById("show").innerHTML = ("data from Java: = " + data);
             var responseData = "from js callback.";
-            //alert(responseData);
-            responseCallback(responseData); //调用Native中callHandler调用时的回调方法
+            responseCallback(responseData);
         });
     });
 
