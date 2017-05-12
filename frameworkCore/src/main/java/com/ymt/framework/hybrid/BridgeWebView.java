@@ -44,6 +44,11 @@ public class BridgeWebView extends WebView implements IWebViewJavascriptBridge {
     }
 
     @Override
+    public void sendEvent(String event) {
+        handlerMgr.sendEvent(event);
+    }
+
+    @Override
     public void send(String data) {
         handlerMgr.send(data);
     }

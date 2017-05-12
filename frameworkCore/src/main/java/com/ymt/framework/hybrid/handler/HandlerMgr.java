@@ -1,5 +1,6 @@
 package com.ymt.framework.hybrid.handler;
 
+import android.content.Context;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -12,6 +13,10 @@ import com.ymt.framework.hybrid.defines.IWebViewJavascriptBridge;
 import com.ymt.framework.hybrid.manager.BridgeUtil;
 import com.ymt.framework.hybrid.model.Message;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +29,11 @@ import java.util.Map;
 public class HandlerMgr implements IWebViewJavascriptBridge {
     BridgeWebView webView;
     private long uniqueId = 0;
+    private boolean registBridge;
     private List<Message> startupMessage = new ArrayList<Message>();
     AbstractBridgeHandler defaultHandler = new DefaultHandler();
     Map<String, IJsCallBack> responseCallbacks = new HashMap<String, IJsCallBack>();
+    static final String bridgeJs = "WebViewJavascriptBridge.js";
 
     public void setWebView(BridgeWebView wv) {
         this.webView = wv;
@@ -74,6 +81,12 @@ public class HandlerMgr implements IWebViewJavascriptBridge {
 
     public void send(String data, IJsCallBack responseCallback) {
         doSend(null, data, responseCallback);
+    }
+
+    public void sendEvent(String event) {
+        Message m = new Message();
+        m.setEvent(event);
+        queueMessage(m);
     }
 
     private void doSend(String handlerName, String data, IJsCallBack responseCallback) {
@@ -202,5 +215,56 @@ public class HandlerMgr implements IWebViewJavascriptBridge {
         return webView;
     }
 
+    public static void loadLocalJs(WebView view, String path) {
+        String jsContent = assetFile2Str(view.getContext(), path);
+        view.loadUrl("javascript:" + jsContent);
+    }
 
+    public static void executeJs(WebView view, String func) {
+        if (view == null) return;
+        view.loadUrl("javascript:try{" + func + "();}catch(e){}");
+    }
+
+    public void onPageFinished(WebView view) {
+        if (registBridge) return;
+        loadLocalJs(view, bridgeJs);
+        if (startupMessage != null) {
+            for (Message m : startupMessage) {
+                dispatchMessage(m);
+            }
+            startupMessage = null;
+        }
+        registBridge = true;
+    }
+
+    public static String assetFile2Str(Context c, String urlStr) {
+        InputStream in = null;
+        try {
+            in = c.getAssets().open(urlStr);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            do {
+                line = bufferedReader.readLine();
+                if (line != null && !line.matches("^\\s*\\/\\/.*")) {
+                    sb.append(line);
+                }
+            } while (line != null);
+
+            bufferedReader.close();
+            in.close();
+
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return null;
+    }
 }

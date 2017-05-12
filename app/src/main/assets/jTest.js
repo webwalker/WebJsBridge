@@ -2,7 +2,7 @@
         // 注册方法，让Native层调用
         window.WebViewJavascriptBridge.registerHandler("functionInJs", function(data, responseCallback) {
             document.getElementById("show").innerHTML = ("data from Java: = " + data);
-            var responseData = "Javascript Says Right back aka!";
+            var responseData = "from js callback.";
             //alert(responseData);
             responseCallback(responseData); //调用Native中callHandler调用时的回调方法
         });
@@ -93,15 +93,16 @@
                 visible:1, //是否显示分享按钮, 默认为1显示
                 title: "J标题",
                 content: "J内容",
+                moment: "朋友圈",
+                sina:"",
                 linkUrl: "http://www.baidu.com",
                 imgUrl: "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=988553887,3280974760&fm=80", // 分享图标
                 hide:["SinaWeibo"]
             },
             msgIcon:1, //是否显示消息图标
-            moreIcon:[{ //其他更多的菜单项功能待扩展
-                title:"显示的标题", //如聚洋货
-                url:"http://www.baidu.com" //点击后返回的地址
-            }]
+            cartIcon:1,
+            reportIcon:1,
+            editIcon:1
         });
     }
 
@@ -112,6 +113,8 @@
             shareIcon: { //分享相关的信息
                 title: "J标题",
                 content: "J内容",
+                moment: "朋友圈",
+                sina:"放到",
                 linkUrl: "http://www.baidu.com",
                 imgUrl: "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=988553887,3280974760&fm=80", // 分享图标
                 hide:["SinaWeibo"],
@@ -121,6 +124,10 @@
 
     jTest.pageRefreshType = function(){
         ymt.pageRefreshType({refreshType:1}); //1刷新当前页，0默认刷新回到首页
+    }
+
+    jTest.attach = function(){
+        ymt.attach({type:1, data:{}});
     }
 
     jTest.userLogin = function(){
@@ -149,6 +156,10 @@
                 var image = res.data;// true已登录，false未登录
             }
         });
+    }
+
+    jTest.interestMap = function(){
+        ymt.interestMap();
     }
 
     var localId;
@@ -181,6 +192,22 @@
         });
     }
 
+    //下单
+    jTest.order = function(){
+        ymt.order({
+            payMode:0, //支付方式，0全款,1定金
+            orders:[{
+                        skuId:"", //productId、catalogId, 选好的SkuId
+                        count:1, //购买数量
+                        price:100.1, //下单的商品单价
+                    },{
+                        skuId:"",
+                        count:1,
+                        price:100.1,
+                    }]
+        });
+    }
+
     jTest.notifyPay = function(){
         ymt.notifyPay({
             orderId:"10000000001", //目前可为空
@@ -190,10 +217,22 @@
         });
     }
 
+    jTest.orderDetail = function(){
+        ymt.orderDetail({
+            orderId:"1000000001" //订单编号
+        });
+    }
+
+    jTest.withdraw = function(){
+        ymt.withdraw();
+    }
+
     jTest.share = function(){
         ymt.share({
             title: "标题",
             content: "内容",
+            moment: "朋友圈",
+            sina:"",
             linkUrl: "http://www.baidu.com",
             imgUrl: "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=988553887,3280974760&fm=80", // 分享图标
             hide:["SinaWeibo"],
@@ -246,6 +285,32 @@
     jTest.activityPartnerList = function(){
         ymt.activityPartnerList({
             activityId:"100296896"
+        });
+    }
+
+    jTest.noteBrand = function(){
+        ymt.noteBrand();
+    }
+
+    jTest.noteType = function(data){
+        ymt.noteType({
+            noteType:data
+        });
+    }
+
+    jTest.countryList = function(){
+        ymt.countryList();
+    }
+
+    jTest.fansUserList = function(){
+        ymt.fansUserList({
+            userId:'4081'
+        });
+    }
+
+    jTest.followUserList = function(){
+        ymt.followUserList({
+            userId:'4081'
         });
     }
 
@@ -335,6 +400,42 @@
         });
     }
 
+    jTest.similarProduct = function(){
+        //有则传，无则不传，必需的参数信息：id、pic、description、price
+        ymt.similarProduct({
+            id:"", //商品id
+            pic:"", //商品图片
+            productType:3, // 商品平台   1:扫货  2:现货  3:活动
+            deliveryType:0, //发货类型： 0未知 1国内  2直邮   3贝海直邮  4卖家保税 5贝海保税 6第三方认证直邮 7拼邮
+            tariffType:0, //0：不包邮不包税 1:包邮 2:包税 3:包邮包税
+            refundType:0, // 0不支持 1官方  2非官方
+            description:"", //商品描述
+            price:100, //商品价格
+            priceType:0, //价格类型 0普通 1新人价 2VIP价   3运营活动价  4关注可享VIP
+            remainStock:0, // 剩余库存
+        });
+    }
+
+    jTest.similarTopic = function(){
+        ymt.similarTopic({
+            topicId:"c8dada49-6e39-421d-8250-609385724fb6" //主题Id
+        });
+    }
+
+    jTest.topicList = function(){
+        ymt.topicList({
+            topicId:"1001641", //清单Id
+            title:"123432424", //清单显示的标题
+            productId:"" //产品ID，外面点进去的时候排在第一位，可以不传递
+        });
+    }
+
+    jTest.search = function(){
+        ymt.search({
+            keys:["a","b","c"]
+        });
+    }
+
     jTest.tabHome = function(){
         ymt.tabHome({
             name:"jyh",
@@ -351,7 +452,20 @@
     }
 
     jTest.bindMobile = function(){
-        ymt.bindMobile();
+        ymt.bindMobile({
+            success:function(res){
+                alert("success:" + res.data + "____" + res.msg);
+            },
+            fail:function(res){
+                alert("fail:" + res.data + "____" + res.msg);
+            }
+        });
+    }
+
+    jTest.couponProducts = function(){
+        ymt.couponProducts({
+            couponId:"" //优惠券ID
+        });
     }
 
     jTest.pageBack = function(){
@@ -410,6 +524,27 @@
             data:"222222222222222222222222"
         });
     }
+
+    jTest.registEvent = function(){
+        ymt.registEvent({
+            url:"", //需要冒泡该事件的页面URL地址，匹配时才通知页面，为空时则仅通知紧邻的上一个页面
+            name:"test", //通知的事件名称
+            data:"123" //通知的事件参数信息,可为空
+        });
+    }
+
+    jTest.clipboard = function(){
+        ymt.clipboard({
+            data:"剪切板..."
+        });
+    }
+
+    jTest.openUrl = function(){
+        ymt.openWin({
+            url:"http://www.baidu.com",
+            winType:-1
+        });
+     }
 
     jTest.command = function(name, data){
         ymt.command(name, data);

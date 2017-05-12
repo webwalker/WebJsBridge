@@ -6,56 +6,18 @@
     if (window.WebViewJavascriptBridge) {
         return;
     }
-
     var messagingIframe;
     var sendMessageQueue = [];
     var receiveMessageQueue = [];
     var messageHandlers = {};
-
-    var CUSTOM_PROTOCOL_SCHEME = 'ymt';
+    var CUSTOM_PROTOCOL_SCHEME = 'ymtapi';
     var QUEUE_HAS_MESSAGE = '__QUEUE_MESSAGE__/';
-
     var responseCallbacks = {};
     var uniqueId = 1;
 
-    var base64encodechars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    function base64encode(str) {
-        if (str === undefined) {
-            return str;
-        }
-
-        var out, i, len;
-        var c1, c2, c3;
-        len = str.length;
-        i = 0;
-        out = "";
-        while (i < len) {
-            c1 = str.charCodeAt(i++) & 0xff;
-            if (i == len) {
-                out += base64encodechars.charAt(c1 >> 2);
-                out += base64encodechars.charAt((c1 & 0x3) << 4);
-                out += "==";
-                break;
-            }
-            c2 = str.charCodeAt(i++);
-            if (i == len) {
-                out += base64encodechars.charAt(c1 >> 2);
-                out += base64encodechars.charAt(((c1 & 0x3) << 4) | ((c2 & 0xf0) >> 4));
-                out += base64encodechars.charAt((c2 & 0xf) << 2);
-                out += "=";
-                break;
-            }
-            c3 = str.charCodeAt(i++);
-            out += base64encodechars.charAt(c1 >> 2);
-            out += base64encodechars.charAt(((c1 & 0x3) << 4) | ((c2 & 0xf0) >> 4));
-            out += base64encodechars.charAt(((c2 & 0xf) << 2) | ((c3 & 0xc0) >> 6));
-            out += base64encodechars.charAt(c3 & 0x3f);
-        }
-        return out;
-    }
-
     function _createQueueReadyIframe(doc) {
         messagingIframe = doc.createElement('iframe');
+        messagingIframe.id = "bridgeIframe";
         messagingIframe.style.display = 'none';
         doc.documentElement.appendChild(messagingIframe);
     }
@@ -162,8 +124,7 @@
     }
 
     function isDefined(data){
-        if(data == null || typeof data == 'undefined')
-            return false;
+        if(data == null || typeof data == 'undefined') return false;
         return true;
     }
 
@@ -185,8 +146,11 @@
         setTimeout(function() {
             var message = JSON.parse(messageJSON);
             var responseCallback;
+
+            if(WebViewJavascriptBridge.debug == true) {
+                alert(messageJSON);
+            }
             //java call finished, now need to call js callback function
-            //JS invoke Native
             if (message.responseId) {
                 responseCallback = responseCallbacks[message.responseId];
                 if (!responseCallback) {
@@ -212,6 +176,10 @@
                 }
                 //查找指定handler
                 try {
+                    if(message.event){
+                        eval(message.event);
+                        return;
+                    }
                     handler(message.data, responseCallback);
                 } catch (exception) {
                     if (typeof console != 'undefined') {
@@ -225,21 +193,27 @@
     //提供给native调用,receiveMessageQueue 在会在页面加载完后赋值为null,所以
     function _handleMessageFromNative(messageJSON) {
         //console.log(messageJSON);
-        if (receiveMessageQueue) {
+        if (receiveMessageQueue && receiveMessageQueue.length > 0) {
             receiveMessageQueue.push(messageJSON);
         } else {
             _dispatchMessageFromNative(messageJSON);
         }
     }
 
+    function getVersion() {
+        return 1003;
+    }
+
     var WebViewJavascriptBridge = window.WebViewJavascriptBridge = {
+        debug: false,
         init: init,
         send: send,
         registerHandler: registerHandler,
         callHandler: callHandler,
         callHandler2: callHandler2,
         _fetchQueue: _fetchQueue,
-        _handleMessageFromNative: _handleMessageFromNative
+        _handleMessageFromNative: _handleMessageFromNative,
+        getVersion: getVersion
     };
 
     var doc = document;
@@ -248,4 +222,6 @@
     readyEvent.initEvent('WebViewJavascriptBridgeReady');
     readyEvent.bridge = WebViewJavascriptBridge;
     doc.dispatchEvent(readyEvent);
+    try{ymt.initCallback();}catch(e){}
+    try{YmtApi.sendEvent(1000, {}, '');}catch(e){}
 })();

@@ -22,6 +22,7 @@
             signature: '',
             jsApiList: []
         });
+
 </script>
 <p>
     <xmp id="show">
@@ -113,6 +114,38 @@
             <input type="button" value="网络类型" onclick="jTest.getNetworkType();"/>
             <input type="button" value="友盟日志" onclick="jTest.sendUmengLog();"/>
             <input type="button" value="算法日志" onclick="jTest.sendYLog();"/>
+            <input type="button" value="注册事件" onclick="jTest.registEvent();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="笔记品牌" onclick="jTest.noteBrand();"/>
+            <input type="button" value="买手笔记列表" onclick="jTest.noteType(0);"/>
+            <input type="button" value="买家笔记列表" onclick="jTest.noteType(1);"/>
+            <input type="button" value="关注笔记列表" onclick="jTest.noteType(2);"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="兴趣图谱" onclick="jTest.interestMap();"/>
+            <input type="button" value="国家列表" onclick="jTest.countryList();"/>
+            <input type="button" value="关注列表" onclick="jTest.followUserList();"/>
+            <input type="button" value="粉丝列表" onclick="jTest.fansUserList();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="订单详情" onclick="jTest.orderDetail();"/>
+            <input type="button" value="下单" onclick="jTest.order();"/>
+            <input type="button" value="提现" onclick="jTest.withdraw();"/>
+            <input type="button" value="附加参数" onclick="jTest.attach();"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="剪切板" onclick="jTest.clipboard();"/>
+            <input type="button" value="打开浏览器" onclick="jTest.openUrl();"/>
+            <input type="button" value="必买清单" onclick="jTest.topicList();"/>
         </td>
     </tr>
 </table>

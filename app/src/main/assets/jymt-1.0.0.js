@@ -3,7 +3,6 @@
     var initialize = false;
     var configData;
     var configIsValid = false;
-    var bridgeVersion = 1001;
     var readyCallback = function () {
         var callback = readyCallback._que.shift();
         while (callback) {
@@ -13,9 +12,9 @@
     };
     var ymt = window.ymt = {
         initCallback: initCallback,
+        registerHandler: registerHandler,
         config: config,
         ready: ready,
-        getVersion: getVersion,
         test: test,
         //基础接口
         closeWin: closeWin,
@@ -23,17 +22,23 @@
         titleBar: titleBar,
         bottomBar: bottomBar,
         pageRefreshType: pageRefreshType,
+        attach: attach,
         //用户接口
         userLogin: userLogin,
         getLoginStatus: getLoginStatus,
         getUserInfo: getUserInfo,
         uploadUserIcon: uploadUserIcon,
+        interestMap: interestMap,
         //图像接口
         chooseImage: chooseImage,
         uploadImage: uploadImage,
         //支付接口
         pay: pay,
+        order: order,
+        orderPackage: orderPackage,
         notifyPay: notifyPay,
+        orderDetail: orderDetail,
+        withdraw: withdraw,
         //分享接口
         share: share,
         //评论接口
@@ -44,6 +49,11 @@
         publishNote: publishNote,
         noteFansList: noteFansList,
         activityPartnerList: activityPartnerList,
+        noteBrand: noteBrand,
+        noteType: noteType,
+        countryList: countryList,
+        fansUserList: fansUserList,
+        followUserList: followUserList,
         //消息接口
         showMsgIcon: showMsgIcon,
         onlineService: onlineService,
@@ -55,24 +65,31 @@
         feedBack: feedBack,
         contactBook: contactBook,
         bindMobile: bindMobile,
+        couponProducts: couponProducts,
+        similarProduct: similarProduct,
+        similarTopic: similarTopic,
+        search: search,
+        promotionProduct: promotionProduct,
+        topicDetail: topicDetail,
+        topicList: topicList,
         //事件接口
         listenPageEvent: listenPageEvent,
+        notifyEvent: notifyEvent,
         //系统接口
         getDeviceInfo: getDeviceInfo,
         callPhone: callPhone,
         screenShot: screenShot,
         getNetworkType: getNetworkType,
+        clipboard: clipboard,
         //监控接口
         sendUmengLog: sendUmengLog,
         sendYLog: sendYLog,
-	    command: command
+	    command: command,
+	    registEvent: registEvent,
+	    scrollEvent: scrollEvent
     };
 
     readyCallback._que = []; // manage ready callback event
-
-    function getVersion(){
-        return bridgeVersion;
-    }
 
     function registBridge(){
         var iframe = document.getElementById("initIframe");
@@ -100,20 +117,8 @@
         }
     }
 
-    // invoke native methods
-    function execute(method, data, callback){
-       // send to default handler via window.WebViewJavascriptBridge.send
-       window.WebViewJavascriptBridge.callHandler(
-           method
-           , data
-           , function(result) {
-               callback(result);
-           }
-       );
-    }
-
     //无通用回调
-    function execute2(method, data){
+    function execute(method, data){
         if(!isValid()) return;
         window.WebViewJavascriptBridge.callHandler2(method, data);
     }
@@ -132,18 +137,19 @@
 
     function initCallback(){
         prepare(function(){
-            initialize = true;
             WebViewJavascriptBridge.debug = configData.debug;
+            initialize = true;
+            configIsValid = true;
+            readyCallback();
+            /*
             execute('config', configData, function(result){
                 if(result.code == 1) {
                     configIsValid = true;
-                    //if(typeof readyCallback != 'undefined') readyCallback();
                     readyCallback();
                 }
-            });
+            });*/
             //set as a default js message handler
             window.WebViewJavascriptBridge.init(function(message, responseCallback) {
-                //console.log('JS got a message', message);
             });
         });
     }
@@ -166,79 +172,128 @@
         return ret;
     }
 
-    function test(data) { execute2('test', data); }
+    // 注册方法，让Native层调用
+    function registerHandler(handlerName, handler) {
+        window.WebViewJavascriptBridge.registerHandler(handlerName, handler);
+    }
 
-    function closeWin() { execute2('closeWin', ""); }
+    function test(data) { execute('test', data); }
 
-    function openWin(data) { execute2('openWin', data); }
+    function closeWin() { execute('closeWin', ""); }
 
-    function titleBar(data) { execute2('titleBar', data); }
+    function openWin(data) { execute('openWin', data); }
 
-    function bottomBar(data) { execute2('bottomBar', data); }
+    function titleBar(data) { execute('titleBar', data); }
 
-    function pageRefreshType(data) { execute2('pageRefreshType', data); }
+    function bottomBar(data) { execute('bottomBar', data); }
 
-    function userLogin() { execute2('userLogin', ''); }
+    function pageRefreshType(data) { execute('pageRefreshType', data); }
 
-    function getLoginStatus(data) { execute2('getLoginStatus', data); }
+    function attach(data) { execute('attach', data); }
 
-    function getUserInfo(data) { execute2('getUserInfo', data); }
+    function userLogin() { execute('userLogin', ''); }
 
-    function uploadUserIcon(data) { execute2('uploadUserIcon', data); }
+    function getLoginStatus(data) { execute('getLoginStatus', data); }
 
-    function chooseImage(data) { execute2('chooseImage', data); }
+    function getUserInfo(data) { execute('getUserInfo', data); }
 
-    function uploadImage(data) { execute2('uploadImage', data); }
+    function uploadUserIcon(data) { execute('uploadUserIcon', data); }
 
-    function pay(data) { execute2('pay', data); }
+    function interestMap() { execute('interestMap', ''); }
 
-    function notifyPay(data) { execute2('notifyPay', data); }
+    function chooseImage(data) { execute('chooseImage', data); }
 
-    function share(data) { execute2('share', data); }
+    function uploadImage(data) { execute('uploadImage', data); }
 
-    function comment(data) { execute2('comment', data); }
+    function pay(data) { execute('pay', data); }
 
-    function replyComment(data) { execute2('replyComment', data); }
+    function order(data) { execute('order', data); }
 
-    function noteDetail(data) { execute2('noteDetail', data); }
+    function orderDetail(data) { execute('orderDetail', data); }
 
-    function publishNote(data) { execute2('publishNote', data); }
+    function orderPackage(data) { execute('orderPackage', data); }
 
-    function noteFansList(data) { execute2('noteFansList', data); }
+    function withdraw() { execute('withdraw', ''); }
 
-    function activityPartnerList(data) { execute2('activityPartnerList', data); }
+    function notifyPay(data) { execute('notifyPay', data); }
 
-    function showMsgIcon() { execute2('showMsgIcon', ''); }
+    function share(data) { execute('share', data); }
 
-    function onlineService() { execute2('onlineService', ''); }
+    function comment(data) { execute('comment', data); }
 
-    function openChat(data) { execute2('openChat', data); }
+    function replyComment(data) { execute('replyComment', data); }
 
-    function liveDetail(data) { execute2('liveDetail', data); }
+    function noteDetail(data) { execute('noteDetail', data); }
 
-    function productDetail(data) { execute2('productDetail', data); }
+    function publishNote(data) { execute('publishNote', data); }
 
-    function tabHome(data) { execute2('tabHome', data); }
+    function noteFansList(data) { execute('noteFansList', data); }
 
-    function feedBack() { execute2('feedBack', ''); }
+    function activityPartnerList(data) { execute('activityPartnerList', data); }
 
-    function contactBook() { execute2('contactBook', ''); }
+    function noteBrand() { execute('noteBrand', ''); }
 
-    function bindMobile() { execute2('bindMobile', ''); }
+    function noteType(data) { execute('noteType', data); }
 
-    function listenPageEvent(data) { execute2('listenPageEvent', data); }
+    function countryList() { execute('countryList', ''); }
 
-    function getDeviceInfo(data) { execute2('getDeviceInfo', data); }
+    function followUserList(data) { execute('followUserList', data); }
 
-    function callPhone(data) { execute2('callPhone', data); }
+    function fansUserList(data) { execute('fansUserList', data); }
 
-    function screenShot(data) { execute2('screenShot', data); }
+    function showMsgIcon() { execute('showMsgIcon', ''); }
 
-    function getNetworkType(data) { execute2('getNetworkType', data); }
+    function onlineService() { execute('onlineService', ''); }
 
-    function sendUmengLog(data) { execute2('sendUmengLog', data); }
+    function openChat(data) { execute('openChat', data); }
 
-    function sendYLog(data) { execute2('sendYLog', data); }
+    function liveDetail(data) { execute('liveDetail', data); }
 
-    function command(name, data) { execute2(name, data); }
+    function productDetail(data) { execute('productDetail', data); }
+
+    function tabHome(data) { execute('tabHome', data); }
+
+    function feedBack() { execute('feedBack', ''); }
+
+    function contactBook() { execute('contactBook', ''); }
+
+    function bindMobile(data) { execute('bindMobile', data); }
+
+    function couponProducts(data) { execute('couponProducts', data); }
+
+    function similarProduct(data) { execute('similarProduct', data); }
+
+    function similarTopic(data) { execute('similarTopic', data); }
+
+    function search(data) { execute('search', data); }
+
+    function promotionProduct(data) { execute('promotionProduct', data); }
+
+    function topicList(data) { execute('topicList', data); }
+
+    function topicDetail(data) { execute('topicDetail', data); }
+
+    function listenPageEvent(data) { execute('listenPageEvent', data); }
+
+    function notifyEvent(data) { execute('notifyEvent', data); }
+
+    function getDeviceInfo(data) { execute('getDeviceInfo', data); }
+
+    function callPhone(data) { execute('callPhone', data); }
+
+    function screenShot(data) { execute('screenShot', data); }
+
+    function getNetworkType(data) { execute('getNetworkType', data); }
+
+    function clipboard(data) { execute('clipboard', data); }
+
+    function sendUmengLog(data) { execute('sendUmengLog', data); }
+
+    function sendYLog(data) { execute('sendYLog', data); }
+
+    function registEvent(data) { execute('registEvent', data); }
+
+    function scrollEvent(data) { execute('scrollEvent', data); }
+
+    function command(name, data) { execute(name, data); }
 })();

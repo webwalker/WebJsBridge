@@ -24,21 +24,28 @@ public class BridgeWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        if (isBridgeInvoke(view, url)) return true;
+        return super.shouldOverrideUrlLoading(view, url);
+    }
+
+    //check whether jsbridge invokes protocal or not
+    private boolean isBridgeInvoke(WebView view, String url) {
         try {
             url = URLDecoder.decode(url, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) { // 如果是返回数据
+        if (url.startsWith(BridgeUtil.YMT_INIT)) { // regist Bridge
+            handlerMgr.onPageFinished(view);
+            return true;
+        } else if (url.startsWith(BridgeUtil.YY_RETURN_DATA)) { // return data
             handlerMgr.handlerReturnData(url);
             return true;
-        } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) { //
-            handlerMgr.flushMessageQueue(webView);
+        } else if (url.startsWith(BridgeUtil.YY_OVERRIDE_SCHEMA)) {
+            handlerMgr.flushMessageQueue(view);
             return true;
-        } else {
-            return super.shouldOverrideUrlLoading(view, url);
         }
+        return false;
     }
 
     @Override

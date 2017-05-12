@@ -18,12 +18,14 @@ public class Message {
     private String responseId; //responseId
     private String responseData; //responseData
     private String data; //data of message
+    private String event; //要执行的事件
     private String handlerName; //name of handler
 
     private final static String CALLBACK_ID_STR = "callbackId";
     private final static String RESPONSE_ID_STR = "responseId";
     private final static String RESPONSE_DATA_STR = "responseData";
     private final static String DATA_STR = "data";
+    private final static String EVENT_STR = "event";
     private final static String HANDLER_NAME_STR = "handlerName";
 
     public String getResponseId() {
@@ -58,6 +60,14 @@ public class Message {
         this.data = data;
     }
 
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
     public String getHandlerName() {
         return handlerName;
     }
@@ -71,6 +81,7 @@ public class Message {
         try {
             jsonObject.put(CALLBACK_ID_STR, getCallbackId());
             jsonObject.put(DATA_STR, getData());
+            jsonObject.put(EVENT_STR, getEvent());
             jsonObject.put(HANDLER_NAME_STR, getHandlerName());
             jsonObject.put(RESPONSE_DATA_STR, getResponseData());
             jsonObject.put(RESPONSE_ID_STR, getResponseId());
@@ -90,6 +101,7 @@ public class Message {
             m.setResponseData(jsonObject.has(RESPONSE_DATA_STR) ? jsonObject.getString(RESPONSE_DATA_STR) : null);
             m.setResponseId(jsonObject.has(RESPONSE_ID_STR) ? jsonObject.getString(RESPONSE_ID_STR) : null);
             m.setData(jsonObject.has(DATA_STR) ? jsonObject.getString(DATA_STR) : null);
+            m.setEvent(jsonObject.has(EVENT_STR) ? jsonObject.getString(EVENT_STR) : null);
             return m;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -109,6 +121,7 @@ public class Message {
                 m.setResponseData(jsonObject.has(RESPONSE_DATA_STR) ? jsonObject.getString(RESPONSE_DATA_STR) : null);
                 m.setResponseId(jsonObject.has(RESPONSE_ID_STR) ? jsonObject.getString(RESPONSE_ID_STR) : null);
                 m.setData(jsonObject.has(DATA_STR) ? jsonObject.getString(DATA_STR) : null);
+                m.setEvent(jsonObject.has(EVENT_STR) ? jsonObject.getString(EVENT_STR) : null);
                 list.add(m);
             }
         } catch (JSONException e) {

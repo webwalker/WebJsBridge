@@ -10,6 +10,7 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ymt.framework.hybrid.BridgeWebView;
@@ -69,19 +70,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         User user = new User();
         Location location = new Location();
-        location.address = "SDU";
+        location.address = "abc";
         user.location = location;
-        user.name = "大头鬼";
+        user.name = "xujian";
 
         // 调用页面方法
         webView.callHandler("functionInJs", new Gson().toJson(user), new IJsCallBack() {
             @Override
             public void onCallBack(String data) {
+                Toast toast = Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
-        //发送页面消息
-        webView.send("hello"); //window.WebViewJavascriptBridge.init中可以接收到回调
+        //发送数据，无回调
+        //webView.send("native:hello"); //window.WebViewJavascriptBridge.init中可以接收到回调
+        //执行事件
+        webView.sendEvent("alert(10000000);");
     }
 
     @Override

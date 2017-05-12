@@ -9,8 +9,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class BridgeUtil {
-    public final static String YY_OVERRIDE_SCHEMA = "ymt://";
+    public final static String YY_OVERRIDE_SCHEMA = "ymtapi://";
     public final static String YY_RETURN_DATA = YY_OVERRIDE_SCHEMA + "return/";//格式为   yy://return/{function}/returncontent
+    public final static String YMT_INIT = YY_OVERRIDE_SCHEMA + "init/";
+    public final static String YMT_IMAGE = YY_OVERRIDE_SCHEMA + "img/";
     final static String YY_FETCH_QUEUE = YY_RETURN_DATA + "_fetchQueue/";
     public final static String EMPTY_STR = "";
     public final static String UNDERLINE_STR = "_";
