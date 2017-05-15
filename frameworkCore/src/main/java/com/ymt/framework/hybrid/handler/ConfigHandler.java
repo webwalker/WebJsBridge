@@ -20,6 +20,6 @@ public class ConfigHandler extends AbstractBridgeHandler {
 
     @Override
     public void callback(Object data) {
-        callback(SUCCESS);
+        response(SUCCESS);
     }
 }

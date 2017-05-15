@@ -42,15 +42,15 @@ public abstract class AbstractBridgeHandler {
         return js;
     }
 
-    protected void callback(int code) {
-        callback(code, "", null);
+    protected void response(int code) {
+        response(code, "", null);
     }
 
-    protected void callback(int code, String msg) {
-        callback(code, msg, null);
+    protected void response(int code, String msg) {
+        response(code, msg, null);
     }
 
-    protected void callback(int code, String msg, Object data) {
+    protected void response(int code, String msg, Object data) {
         if (getJs() == null) return;
         getJs().onCallBack(getResp(code, msg, data));
     }

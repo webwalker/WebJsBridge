@@ -14,6 +14,6 @@ public class DefaultHandler extends AbstractBridgeHandler {
 
     @Override
     public void callback(Object data) {
-        callback(SUCCESS, "success", "DefaultHandler response data");
+        response(SUCCESS, "success", "DefaultHandler callback data");
     }
 }

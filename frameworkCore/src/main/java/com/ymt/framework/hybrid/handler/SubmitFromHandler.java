@@ -14,6 +14,6 @@ public class SubmitFromHandler extends AbstractBridgeHandler {
 
     @Override
     public void callback(Object data) {
-        callback(SUCCESS, "success", "submitFromWeb exe, response data 中文 from Java");
+        response(SUCCESS, "success", "submitFromWeb exe, callback data 中文 from Java");
     }
 }

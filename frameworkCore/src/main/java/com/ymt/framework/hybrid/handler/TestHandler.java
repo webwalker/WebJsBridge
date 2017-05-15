@@ -29,6 +29,6 @@ public class TestHandler<T> extends AbstractBridgeHandler {
 
     @Override
     public void callback(Object data) {
-        callback(SUCCESS, "success", data);
+        response(SUCCESS, "success", data);
     }
 }
