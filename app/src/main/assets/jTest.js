@@ -1,6 +1,6 @@
-    ymt.ready(function(){
+    ppd.ready(function(){
         // 注册方法，让Native层调用
-        ymt.registerHandler("functionInJs", function(data, responseCallback) {
+        ppd.registerHandler("functionInJs", function(data, responseCallback) {
             document.getElementById("show").innerHTML = ("data from Java: = " + data);
             var responseData = "from js callback.";
             responseCallback(responseData);
@@ -44,7 +44,7 @@
     }
 
     jTest.proxyImg = function(){
-        document.getElementById("imgNative").src="ymtapi://img/";
+        document.getElementById("imgNative").src="ppdapi://img/";
         alert("proxyImg");
     }
 
@@ -61,19 +61,19 @@
             }
         };
         //方法1
-        /*ymt.test(testData, function(result){
+        /*ppd.test(testData, function(result){
             alert("test with callback:" + result);
         });*/
         //方法2
-        ymt.test(testData);
+        ppd.test(testData);
     }
 
     jTest.closeWin = function(){
-        ymt.closeWin();
+        ppd.closeWin();
     }
 
     jTest.openWin = function(){
-        ymt.openWin({
+        ppd.openWin({
             url:"http://sq0.ymatou.com/forBuyerApp/discover/detail?topic=398&title=%E6%B5%8B%E8%AF%95%E6%8F%92%E5%85%A5%E5%95%86%E5%93%81&ShareTitle=%E6%B5%8B%E8%AF%95%E6%8F%92%E5%85%A5%E5%95%86%E5%93%81&ShareContent=asdfasdfsdfasdfasdfsadf&SharePicUrl=http%3a%2f%2fp6.img.ymatou.com%2fG01%2fM00%2f05%2f32%2frBBlD1YkffuAN1TvAADEF_KhqGA398_s.jpg&ShareLinkUrl=http%3a%2f%2fsq0.ymatou.com%2fforBuyerApp%2fdiscover%2fdetail%3ftopic%3d398&UserId=395528&AccessToken=7A14222AD0A4A56E5DCF417AEACB125F60304602F4C43BE38F908A44CB4182976613D3A87C875652E5B5920D55D40486EFF7ECF048BF89AB&IDFA=EB4D5648-E702-4DB2-B9F3-89062334AE0B&DeviceToken=8e99ab0988cfda50478eded6372d5dbd7782b1c000cc139404cf4f0ceb7f6cd1&Wifi=1&AppName=Buyer&DeviceId=91C1AB2E-9D59-487D-9277-2A0620D954D1",
             winType:1, //0默认为普通窗口，1为专题，2为笔记详情（特殊的头部、底部栏）
             anmiType:1
@@ -81,7 +81,7 @@
     }
 
     jTest.titleBar = function(){
-        ymt.titleBar({
+        ppd.titleBar({
             visible:1, //控制整个标题栏是否可见，默认为1可见
             title:"this is a title",
             backIcon:{
@@ -106,7 +106,7 @@
     }
 
     jTest.bottomBar = function(){
-        ymt.bottomBar({
+        ppd.bottomBar({
             visible:1, //控制整个底部栏是否可见，默认为1可见
             type:1, //底部栏类型, 0默认为无底部栏，1专题, 2笔记详情
             shareIcon: { //分享相关的信息
@@ -122,19 +122,19 @@
     }
 
     jTest.pageRefreshType = function(){
-        ymt.pageRefreshType({refreshType:1}); //1刷新当前页，0默认刷新回到首页
+        ppd.pageRefreshType({refreshType:1}); //1刷新当前页，0默认刷新回到首页
     }
 
     jTest.attach = function(){
-        ymt.attach({type:1, data:{}});
+        ppd.attach({type:1, data:{}});
     }
 
     jTest.userLogin = function(){
-        ymt.userLogin();
+        ppd.userLogin();
     }
 
     jTest.getLoginStatus = function(){
-        ymt.getLoginStatus({
+        ppd.getLoginStatus({
             success: function (res) {
                 var isLogin = res.data;
             }
@@ -142,7 +142,7 @@
     }
 
     jTest.getUserInfo = function(){
-        ymt.getUserInfo({
+        ppd.getUserInfo({
             success: function (res) {
                 var user = res.data;
             }
@@ -150,7 +150,7 @@
     }
 
     jTest.uploadUserIcon = function(){
-        ymt.uploadUserIcon({
+        ppd.uploadUserIcon({
             success: function (res) {
                 var image = res.data;// true已登录，false未登录
             }
@@ -158,24 +158,24 @@
     }
 
     jTest.interestMap = function(){
-        ymt.interestMap();
+        ppd.interestMap();
     }
 
     var localId;
     jTest.chooseImage = function(){
-        ymt.chooseImage({
+        ppd.chooseImage({
             count: 1, // 默认1, 目前只支持1，待后续扩展
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
                 localId = res.data; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                document.getElementById("imgNative").src = "ymtapi://img/?path=" + localId;
+                document.getElementById("imgNative").src = "ppdapi://img/?path=" + localId;
             }
         });
     }
 
     jTest.uploadImage = function(){
-        ymt.uploadImage({
+        ppd.uploadImage({
             url:'http://www.baidu.com', //上传的图片服务器地址
             message:'正在上传第1张图片{0}',
             localId: localId, //需要上传的图片的本地ID，由chooseImage接口获得
@@ -186,14 +186,14 @@
     }
 
     jTest.pay = function(){
-        ymt.pay({
+        ppd.pay({
             orderId:"1000000001" //待支付的订单编号
         });
     }
 
     //下单
     jTest.order = function(){
-        ymt.order({
+        ppd.order({
             payMode:0, //支付方式，0全款,1定金
             orders:[{
                         skuId:"", //productId、catalogId, 选好的SkuId
@@ -208,7 +208,7 @@
     }
 
     jTest.notifyPay = function(){
-        ymt.notifyPay({
+        ppd.notifyPay({
             orderId:"10000000001", //目前可为空
             payType:20, //支付类型,用于扩展其他Web支付方式，20 PayPal
             payStatus:1, //支付状态, 1成功，2失败，3取消
@@ -217,17 +217,17 @@
     }
 
     jTest.orderDetail = function(){
-        ymt.orderDetail({
+        ppd.orderDetail({
             orderId:"1000000001" //订单编号
         });
     }
 
     jTest.withdraw = function(){
-        ymt.withdraw();
+        ppd.withdraw();
     }
 
     jTest.share = function(){
-        ymt.share({
+        ppd.share({
             title: "标题",
             content: "内容",
             moment: "朋友圈",
@@ -245,14 +245,14 @@
     }
 
     jTest.comment = function(){
-        ymt.comment({
+        ppd.comment({
             objectId:"100297352",
             objectType:5
         });
     }
 
     jTest.replyComment = function(){
-        ymt.replyComment({
+        ppd.replyComment({
             objectId:"100296896",
             objectType:5,
             replyCommentId:15179460,
@@ -261,68 +261,68 @@
     }
 
     jTest.noteDetail = function(){
-        ymt.noteDetail({
+        ppd.noteDetail({
             noteId:"100296896",
             noteVersion:"20160226092040778"
         });
     }
 
     jTest.publishNote = function(){
-        ymt.publishNote({
+        ppd.publishNote({
             activityId:"",
             activityName:""
         });
     }
 
     jTest.noteFansList = function(){
-        ymt.noteFansList({
+        ppd.noteFansList({
             noteId:"100296896",
             noteVersion:""
         });
     }
 
     jTest.activityPartnerList = function(){
-        ymt.activityPartnerList({
+        ppd.activityPartnerList({
             activityId:"100296896"
         });
     }
 
     jTest.noteBrand = function(){
-        ymt.noteBrand();
+        ppd.noteBrand();
     }
 
     jTest.noteType = function(data){
-        ymt.noteType({
+        ppd.noteType({
             noteType:data
         });
     }
 
     jTest.countryList = function(){
-        ymt.countryList();
+        ppd.countryList();
     }
 
     jTest.fansUserList = function(){
-        ymt.fansUserList({
+        ppd.fansUserList({
             userId:'4081'
         });
     }
 
     jTest.followUserList = function(){
-        ymt.followUserList({
+        ppd.followUserList({
             userId:'4081'
         });
     }
 
     jTest.showMsgIcon = function(){
-        ymt.showMsgIcon();
+        ppd.showMsgIcon();
     }
 
     jTest.onlineService = function(){
-        ymt.onlineService();
+        ppd.onlineService();
     }
 
     jTest.openChat = function(){
-        ymt.openChat({
+        ppd.openChat({
             sessionId: "11111_22222",
             toId:"22222", //接收者id
             toLoginId:"lunchzhao", //接收者昵称
@@ -379,7 +379,7 @@
     }
 
     jTest.liveDetail = function(){
-        ymt.liveDetail({
+        ppd.liveDetail({
             activity:{
                 ActivityId:"479371"
             }
@@ -387,7 +387,7 @@
     }
 
     jTest.productDetail = function(){
-        ymt.productDetail({
+        ppd.productDetail({
             seller:{
                 Logo:"http://p10.img.ymatou.com/G02/upload/product/big/M02/59/67/CgvUBFYExqWADFNHAAXG3213lcA613_b.jpg",
                 Seller:"test",//买手名称
@@ -401,7 +401,7 @@
 
     jTest.similarProduct = function(){
         //有则传，无则不传，必需的参数信息：id、pic、description、price
-        ymt.similarProduct({
+        ppd.similarProduct({
             id:"", //商品id
             pic:"", //商品图片
             productType:3, // 商品平台   1:扫货  2:现货  3:活动
@@ -416,13 +416,13 @@
     }
 
     jTest.similarTopic = function(){
-        ymt.similarTopic({
+        ppd.similarTopic({
             topicId:"c8dada49-6e39-421d-8250-609385724fb6" //主题Id
         });
     }
 
     jTest.topicList = function(){
-        ymt.topicList({
+        ppd.topicList({
             topicId:"1001641", //清单Id
             title:"123432424", //清单显示的标题
             productId:"" //产品ID，外面点进去的时候排在第一位，可以不传递
@@ -430,28 +430,28 @@
     }
 
     jTest.search = function(){
-        ymt.search({
+        ppd.search({
             keys:["a","b","c"]
         });
     }
 
     jTest.tabHome = function(){
-        ymt.tabHome({
+        ppd.tabHome({
             name:"jyh",
             subName:""
         });
     }
 
     jTest.feedBack = function(){
-        ymt.feedBack();
+        ppd.feedBack();
     }
 
     jTest.contactBook = function(){
-        ymt.contactBook();
+        ppd.contactBook();
     }
 
     jTest.bindMobile = function(){
-        ymt.bindMobile({
+        ppd.bindMobile({
             success:function(res){
                 alert("success:" + res.data + "____" + res.msg);
             },
@@ -462,7 +462,7 @@
     }
 
     jTest.couponProducts = function(){
-        ymt.couponProducts({
+        ppd.couponProducts({
             couponId:"" //优惠券ID
         });
     }
@@ -472,7 +472,7 @@
     }
 
     jTest.listenPageEvent = function(){
-        ymt.listenPageEvent({
+        ppd.listenPageEvent({
             //close:pageBack,
             success:function(res){
                 var event = res.data;
@@ -482,7 +482,7 @@
     }
 
     jTest.getDeviceInfo = function(){
-        ymt.getDeviceInfo({
+        ppd.getDeviceInfo({
             success: function (res) {
                 var device = res.data;
             }
@@ -490,13 +490,13 @@
     }
 
     jTest.callPhone = function(){
-        ymt.callPhone({
+        ppd.callPhone({
             phoneNumber:"10086"
         });
     }
 
     jTest.screenShot = function(){
-        ymt.screenShot({
+        ppd.screenShot({
             success:function(res){
                 //var url = res.data.url;
             }
@@ -504,7 +504,7 @@
     }
 
     jTest.getNetworkType = function(){
-        ymt.getNetworkType({
+        ppd.getNetworkType({
             success: function (res) {
                 var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
                 var operator = res.operator; //运营商
@@ -513,19 +513,19 @@
     }
 
     jTest.sendUmengLog = function(){
-        ymt.sendUmengLog({
+        ppd.sendUmengLog({
             data:"1111111111111111111111111"
         });
     }
 
     jTest.sendYLog = function(){
-        ymt.sendYLog({
+        ppd.sendYLog({
             data:"222222222222222222222222"
         });
     }
 
     jTest.registEvent = function(){
-        ymt.registEvent({
+        ppd.registEvent({
             url:"", //需要冒泡该事件的页面URL地址，匹配时才通知页面，为空时则仅通知紧邻的上一个页面
             name:"test", //通知的事件名称
             data:"123" //通知的事件参数信息,可为空
@@ -533,18 +533,18 @@
     }
 
     jTest.clipboard = function(){
-        ymt.clipboard({
+        ppd.clipboard({
             data:"剪切板..."
         });
     }
 
     jTest.openUrl = function(){
-        ymt.openWin({
+        ppd.openWin({
             url:"http://www.baidu.com",
             winType:-1
         });
      }
 
     jTest.command = function(name, data){
-        ymt.command(name, data);
+        ppd.command(name, data);
     }

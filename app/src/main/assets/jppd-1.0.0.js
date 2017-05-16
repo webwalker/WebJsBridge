@@ -10,7 +10,7 @@
             callback = readyCallback._que.shift();
         }
     };
-    var ymt = window.ymt = {
+    var ppd = window.ppd = {
         initCallback: initCallback,
         registerHandler: registerHandler,
         config: config,
@@ -100,7 +100,7 @@
         iframe = document.createElement('iframe');
         iframe.id = "initIframe";
         iframe.style.display = 'none';
-        iframe.src = 'ymtapi://init/';
+        iframe.src = 'ppdapi://init/';
         document.documentElement.appendChild(iframe);
         return false;
     }

@@ -10,7 +10,7 @@
     var sendMessageQueue = [];
     var receiveMessageQueue = [];
     var messageHandlers = {};
-    var CUSTOM_PROTOCOL_SCHEME = 'ymtapi';
+    var CUSTOM_PROTOCOL_SCHEME = 'ppdapi';
     var QUEUE_HAS_MESSAGE = '__QUEUE_MESSAGE__/';
     var responseCallbacks = {};
     var uniqueId = 1;
@@ -204,6 +204,6 @@
     readyEvent.initEvent('WebViewJavascriptBridgeReady');
     readyEvent.bridge = WebViewJavascriptBridge;
     doc.dispatchEvent(readyEvent);
-    try{ymt.initCallback();}catch(e){}
-    //try{YmtApi.sendEvent(1000, {}, '');}catch(e){}
+    try{ppd.initCallback();}catch(e){}
+    //try{PPDApi.sendEvent(1000, {}, '');}catch(e){}
 })();
