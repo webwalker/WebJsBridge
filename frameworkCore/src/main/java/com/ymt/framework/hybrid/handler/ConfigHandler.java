@@ -15,7 +15,7 @@ public class ConfigHandler extends AbstractBridgeHandler {
         JConfig config = buildParams(json, JConfig.class, resp);
         JContext.getInstance().setConfig(config);
 
-        sendMsg(BridgeEnum.Config.getType());
+        sendMsg(BridgeEnum.Config.getName());
     }
 
     @Override

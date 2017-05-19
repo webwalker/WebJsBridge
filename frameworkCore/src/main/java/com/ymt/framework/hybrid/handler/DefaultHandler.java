@@ -9,7 +9,7 @@ public class DefaultHandler extends AbstractBridgeHandler {
     public void handler(String json, IJsCallBack resp) {
         buildParams(resp);
 
-        sendMsg(BridgeEnum.Config.getType());
+        sendMsg(BridgeEnum.Config.getName());
     }
 
     @Override

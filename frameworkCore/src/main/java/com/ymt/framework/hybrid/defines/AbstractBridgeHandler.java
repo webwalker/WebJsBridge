@@ -55,12 +55,12 @@ public abstract class AbstractBridgeHandler {
         getJs().onCallBack(getResp(code, msg, data));
     }
 
-    protected void sendMsg(int type) {
-        EventBus.getDefault().post(new WebBusItem(type, null));
+    protected void sendMsg(String name) {
+        EventBus.getDefault().post(new WebBusItem(name, null));
     }
 
-    protected void sendMsg(int type, Object data) {
-        EventBus.getDefault().post(new WebBusItem(type, data));
+    protected void sendMsg(String name, Object data) {
+        EventBus.getDefault().post(new WebBusItem(name, data));
     }
 
     protected String getResp(int code, String msg) {

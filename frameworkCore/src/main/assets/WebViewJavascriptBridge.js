@@ -184,7 +184,7 @@
     }
 
     function getVersion() {
-        return 1003;
+        return 1001;
     }
 
     var WebViewJavascriptBridge = window.WebViewJavascriptBridge = {

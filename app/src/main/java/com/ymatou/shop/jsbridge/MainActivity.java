@@ -131,12 +131,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // bridge callback entrance
     public void onEventMainThread(WebBusItem item) {
         if (item == null) return;
-        // 10000-19999之间为bridge特定的区间
-        if (item.msgType < 10000 || item.msgType >= 20000) return;
+        BridgeEnum bridge = BridgeEnum.getByName(item.name);
+        if (bridge == BridgeEnum.Null) return;
 
-        String name = BridgeEnum.getByType(item.msgType).getName();
+        String name = bridge.getName();
         if (!TextUtils.isEmpty(name)) {
-            HandlerBuilder.get(name).callback(item.msgData);
+            HandlerBuilder.get(name).callback(item.data);
         }
     }
 }

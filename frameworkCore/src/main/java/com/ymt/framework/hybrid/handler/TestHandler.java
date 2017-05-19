@@ -22,7 +22,7 @@ public class TestHandler<T> extends AbstractBridgeHandler {
         new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                sendMsg(BridgeEnum.Test.getType(), resultItem);
+                sendMsg(BridgeEnum.Test.getName(), resultItem);
             }
         }.sendEmptyMessageDelayed(0, 2000);
     }
