@@ -21,7 +21,7 @@ public class HandlerBuilder {
     // mapping method handler
     public static Map<String, AbstractBridgeHandler> build() {
         for (BridgeEnum bridge : BridgeEnum.values()) {
-            regist(bridge.getName(), bridge.getHandler());
+            regist(bridge.getNames(), bridge.getHandler());
         }
         return handlers;
     }

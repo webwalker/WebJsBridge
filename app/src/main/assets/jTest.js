@@ -71,20 +71,20 @@
     }
 
     jTest.closeWin = function(){
-        ppd.call('1002');
+        ppd.call('10010003');
     }
 
     jTest.openWin = function(){
-        ppd.openWin({
-            //url:"https://www.baidu.com?title=百度首页",
-            url:"ppdai://router.ppdai.com/activity/product/main?a=1&b=2",
+        ppd.call("10010002", {
+            url:"https://www.baidu.com?title=百度首页",
+            //url:"ppdai://router.ppdai.com/activity/product/main?a=1&b=2",
             winType:1, //0默认为普通窗口,1为专题,2为笔记详情（特殊的头部、底部栏）
             anmiType:1
         });
     }
 
     jTest.titleBar = function(){
-        ppd.call('1003', {
+        ppd.call('10010005', {
                              visible:1, //控制整个标题栏是否可见,默认为1可见
                              title:"this is a title",
                              backIcon:{

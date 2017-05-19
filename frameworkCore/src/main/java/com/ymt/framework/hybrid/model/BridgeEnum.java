@@ -10,45 +10,58 @@ import com.ymt.framework.hybrid.handler.TestHandler;
 /**
  * used to define bridge module type
  * <p>
- * //Name编码规则:xxaabbbb
+ * Name规则:xxaabbbb
  * xx为识别一个App
  * aa表示业务模块，业务类型
  * bbbb表示业务模块内bridge接口编号
  * Created by xujian on 2016/1/28.
  */
 public enum BridgeEnum {
-    Null("10000000", new NullHandler()),
+    Default(10000000, new NullHandler()),
 
-    Config("10000001", new ConfigHandler()),
+    Config(10000001, new ConfigHandler()),
 
-    Ready("10000002", new ReadyHandler()),
+    Ready(10000002, new ReadyHandler()),
 
-    SubmitFromWeb("10000003", new SubmitFromHandler()),
+    SubmitFromWeb(10000003, new SubmitFromHandler()),
 
-    Test("10000004", new TestHandler());
+    Test(10000004, new TestHandler());
 
-    private final String name;
+    private int name;
     private final AbstractBridgeHandler handler;
 
-    BridgeEnum(String name, AbstractBridgeHandler handler) {
+    BridgeEnum(int name, AbstractBridgeHandler handler) {
         this.name = name;
         this.handler = handler;
     }
 
-    public static BridgeEnum getByName(String name) {
+    public static BridgeEnum getById(String id) {
         for (BridgeEnum bridge : BridgeEnum.values()) {
-            if (bridge.getName().equals(name)) {
+            if (bridge.getNames().equals(id)) {
                 return bridge;
             }
         }
-        return BridgeEnum.Null;
+        return BridgeEnum.Default;
     }
 
-    public String getName() {
+    public static BridgeEnum getById(int id) {
+        for (BridgeEnum bridge : BridgeEnum.values()) {
+            if (bridge.getName() == id) {
+                return bridge;
+            }
+        }
+        return BridgeEnum.Default;
+    }
+
+    public int getName() {
         return name;
     }
 
     public AbstractBridgeHandler getHandler() {
         return handler;
+    }
+
+    public String getNames() {
+        return getName() + "";
     }
 }

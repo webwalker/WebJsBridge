@@ -131,10 +131,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // bridge callback entrance
     public void onEventMainThread(WebBusItem item) {
         if (item == null) return;
-        BridgeEnum bridge = BridgeEnum.getByName(item.name);
-        if (bridge == BridgeEnum.Null) return;
+        BridgeEnum bridge = BridgeEnum.getById(item.type);
+        if (bridge == BridgeEnum.Default) return;
 
-        String name = bridge.getName();
+        String name = bridge.getNames();
         if (!TextUtils.isEmpty(name)) {
             HandlerBuilder.get(name).callback(item.data);
         }

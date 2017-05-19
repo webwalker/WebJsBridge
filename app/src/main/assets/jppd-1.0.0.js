@@ -78,9 +78,9 @@
         else readyCallback._que.push(callback);
     }
 
-    function call(id, data) { execute(id, data); }
-
     function call(id) { execute(id, ''); }
+
+    function call(id, data) { execute(id, data); }
 
     function openWin(data) { execute('openWin', data); }
 
