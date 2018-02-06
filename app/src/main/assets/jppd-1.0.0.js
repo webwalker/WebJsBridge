@@ -47,13 +47,6 @@
             initialize = true;
             configIsValid = true;
             readyCallback();
-            /*
-            execute('config', configData, function(result){
-                if(result.code == 1) {
-                    configIsValid = true;
-                    readyCallback();
-                }
-            });*/
             //set as a default js message handler
             window.WebViewJavascriptBridge.init(function(message, responseCallback) {
             });
@@ -106,10 +99,19 @@
             return ret;
         }
         var domain = window.location.host;
-        if(domain.indexOf("ymatou.com") == -1) {
+        if(domain.indexOf("ppdai.com") == -1) {
             //alert("对不起，你没有调用权限，请联系管理员.");
             //return false;
         }
         return ret;
     }
 })();
+
+ppd.config({
+  debug: false,
+  appId: '',
+  timestamp: '',
+  nonceStr: '',
+  signature: '',
+  jsApiList: []
+});
